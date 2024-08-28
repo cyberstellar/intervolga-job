@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/imask"></script>
+</head>
+<body>
+<button class="modal__open" onclick="toggleMenu()">Форма заполнения</button>
+<div class="modal">
+  <span class="modal__close" onclick="toggleMenu()">&times;</span>
+  <h2>Транспортные средства и водители</h2>
+  <form action="" id="vehicle-form">
+    <fieldset>
+      <div class="form__field">
+        <label for="license-plate">Гос-номер</label>
+        <input id="license-plate" type="text" placeholder="Укажите гос-номер" required
+               pattern="[АВЕКМНОРСТУХ]{1}[0-9]{3}[АВЕКМНОРСТУХ]{2}[0-9]{2,3}">
+      </div>
+      <div class="form__field">
+        <label for="car-name">Транспортное средство</label>
+        <input id="car-name" type="text" placeholder="Транспортное средство" required>
+      </div>
+      <div class="form__field">
+        <label for="delivery-date">Ориентировочная дата прибытия к покупателю</label>
+        <input id="delivery-date" type="date" placeholder="Дата*" required>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Данные о водителе</legend>
+      <div class="form__field">
+        <label for="driver-name">ФИО водителя</label>
+        <input id="driver-name" type="text" placeholder="Укажите ФИО водителя" required>
+      </div>
+      <div class="form__field">
+        <label for="passport-series">Паспортные данные</label>
+        <label for="passport-number" hidden></label>
+        <div class="row-block">
+          <input id="passport-series" type="text" placeholder="Серия" required pattern="[0-9]{4}">
+          <input id="passport-number" type="text" placeholder="Номер" required pattern="[0-9]{6}">
+        </div>
+      </div>
+      <div class="form__field">
+        <label for="registration-authority">Кем выдан</label>
+        <input id="registration-authority" type="text" placeholder="Кем выдан" required>
+      </div>
+      <div class="form__field">
+        <label for="registration-date">Когда выдан</label>
+        <input id="registration-date" type="date" placeholder="Когда выдан" required>
+      </div>
+    </fieldset>
+    <div class="row-block">
+      <button type="submit">Отправить</button>
+      <button type="reset" class="button--secondary" onclick="toggleMenu()">Отменить</button>
+    </div>
+  </form>
+</div>
+</body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: sans-serif;
+        position: relative;
+    }
+
+    fieldset {
+        border: none;
+        margin-bottom: 16px;
+    }
+
+    h2, legend {
+        font-weight: 600;
+        margin-bottom: 24px;
+    }
+
+    input {
+        padding: 16px;
+    }
+
+    button {
+        padding: 16px;
+        border: 1px solid black;
+        border-bottom-width: 2px;
+        border-radius: 8px;
+        background: black;
+        color: white;
+        min-width: 140px;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease;
+    }
+
+    @media (hover: hover) {
+        button:hover {
+            box-shadow: 0 0 0 2px black;
+        }
+    }
+
+    .button--secondary {
+        background: white;
+        color: black;
+    }
+
+    .modal {
+        position: absolute;
+        top: 0;
+        padding: 24px;
+        background: white;
+        border: 2px solid black;
+        width: min-content;
+        max-height: 100vh;
+        overflow: auto;
+        translate: -100%;
+        transition: all 0.3s ease;
+    }
+
+    .modal::-webkit-scrollbar {
+        display: none;
+    }
+
+    .modal--visible {
+        translate: 0;
+    }
+
+    .modal__close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 32px;
+        cursor: pointer;
+    }
+
+    .form__field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 24px;
+        gap: 16px;
+    }
+
+    .row-block {
+        display: flex;
+        gap: 8px;
+    }
+
+    .row-block input {
+        flex: 1;
+    }
+</style>
+<script>
+  const form = document.querySelector('#vehicle-form')
+  const modal = document.querySelector('.modal')
+  const deliveryDate = document.querySelector('#delivery-date')
+  const registrationDate = document.querySelector('#registration-date')
+
+  function toggleMenu() {
+    modal.classList.toggle('modal--visible')
+  }
+
+  deliveryDate.addEventListener('input', () => {
+    if (new Date(deliveryDate.value) < new Date()) {
+      deliveryDate.setCustomValidity('Дата прибытия к покупателю не может быть раньше текущей')
+    } else {
+      deliveryDate.setCustomValidity('')
+    }
+  })
+
+  registrationDate.addEventListener('input', () => {
+    if (new Date() - new Date(registrationDate.value) < 18 * 365.25 * 24 * 60 * 60 * 1000) {
+      registrationDate.setCustomValidity('Возраст водителя должен быть не менее 18 лет')
+    } else {
+      registrationDate.setCustomValidity('')
+    }
+  })
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    toggleMenu()
+    console.log(new FormData(form))
+    form.reset()
+  })
+
+  form.addEventListener('reset', () => {
+    setTimeout(() => {
+      licensePlateMask.updateValue()
+      licensePlateMask.updateControl()
+      passportSeriesMask.updateValue()
+      passportSeriesMask.updateControl()
+      passportNumberMask.updateValue()
+      passportNumberMask.updateControl()
+    })
+    localStorage.removeItem(form.id)
+  })
+
+  form.addEventListener('change', () => {
+    const formValues = {}
+    const elements = Array.from(form.elements).filter(item => item.id)
+    elements.forEach(({ id, value }) => {
+      formValues[id] = value
+    })
+    localStorage.setItem(form.id, JSON.stringify(formValues))
+  })
+
+  window.addEventListener('load', () => {
+    const formValues = JSON.parse(localStorage.getItem(form.id))
+    if (!formValues) return
+    const elements = form.elements
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i]
+      if (formValues[element.id]) {
+        element.value = formValues[element.id]
+      }
+    }
+  })
+
+  const licensePlateMask = IMask(
+    document.getElementById('license-plate'),
+    {
+      mask: 'x000xx00[0]',
+      prepareChar: str => str.toUpperCase(),
+      blocks: {
+        x: {
+          mask: '#',
+          placeholderChar: 'X',
+          definitions: {
+            '#': /[АВЕКМНОРСТУХ]/,
+          },
+        },
+        0: {
+          mask: '0',
+          placeholderChar: '0',
+        }
+      },
+      lazy: false,
+    }
+  )
+
+  const passportSeriesMask = IMask(
+    document.getElementById('passport-series'),
+    {
+      mask: '0000',
+      lazy: false,
+    }
+  )
+
+  const passportNumberMask = IMask(
+    document.getElementById('passport-number'),
+    {
+      mask: '000000',
+      lazy: false,
+    }
+  )
+</script>
+</html>

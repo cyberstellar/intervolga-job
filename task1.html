@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<div class="main">
+  <div class="header">Шапка</div>
+  <div class="side-1">Панель 1</div>
+  <div class="side-2">Контент</div>
+  <div class="content">
+    <img src="https://placehold.jp/280x170.png" alt="placeholder">
+    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consequuntur dignissimos dolore ex
+      exercitationem fugit harum, hic id illum incidunt ipsa ipsam minima modi nam nihil non quae quas quisquam rem
+      rerum veniam voluptate voluptates? Neque repellendus, repudiandae! Aut beatae, corporis distinctio dolor dolorem
+      dolores eum fuga illo inventore laudantium magnam molestias nostrum porro possimus, quaerat quod reiciendis saepe
+      sapiente sequi sit tempore ullam veritatis vero? Asperiores atque deleniti labore. Ad adipisci aliquid aut autem
+      culpa deleniti est ex explicabo nihil quae quaerat quam quo, quos, similique sit! Asperiores atque consequatur
+      doloribus facilis itaque iusto repellat similique sint vel vitae?
+    </div>
+    <div>Consequuntur cupiditate expedita hic iste libero neque officia, pariatur repudiandae sed tempora! Animi
+      blanditiis distinctio et laudantium magni neque repellendus temporibus voluptate? Aliquam culpa eum eveniet, hic
+      iusto molestiae nam necessitatibus nisi nobis nulla omnis praesentium quae quas quisquam recusandae veniam
+      veritatis! Accusamus, consectetur cum cupiditate, earum eos fugiat laudantium molestias mollitia sint soluta
+      tenetur, voluptate. Animi atque hic molestiae sed. Aliquam animi asperiores at aut corporis debitis dicta
+      dignissimos distinctio dolorum ea enim exercitationem, facilis fuga in inventore iste itaque iusto magnam modi
+      neque nihil nisi nostrum obcaecati officia optio quaerat quos repellendus repudiandae sit tempore totam velit
+      voluptatem!
+    </div>
+    <div>Aspernatur culpa delectus dolor ea excepturi illo incidunt inventore ipsa iusto non numquam odio, officiis
+      perferendis, quisquam sed soluta temporibus unde vitae! Beatae corporis dignissimos dolor ea earum eligendi esse
+      est eveniet, excepturi hic mollitia, nobis officiis possimus quasi quisquam quo quos reiciendis rerum suscipit
+      tempora tenetur veniam vero vitae voluptate voluptates! Ad, aliquam aliquid animi aperiam asperiores consectetur
+      corporis deserunt distinctio eius eos ex fugiat fugit, ipsam iusto magnam magni minima, modi molestiae
+      necessitatibus neque nisi nobis obcaecati omnis perspiciatis placeat quam quidem ratione recusandae reprehenderit
+      sed suscipit ullam ut vel velit voluptas voluptatem voluptatibus! Animi consequuntur dolores fugiat?
+    </div>
+  </div>
+  <div class="footer">Подвал</div>
+</div>
+</body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .main {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        grid-template-rows: min-content min-content min-content 1fr min-content;
+        height: 100vh;
+    }
+
+    .main > div {
+        resize: vertical;
+        overflow: auto;
+        flex-shrink: 0;
+    }
+
+    .header, .footer {
+        background: #ccc;
+        grid-column: 1 / -1;
+        height: 60px;
+    }
+
+    .header {
+        grid-row: 1;
+        order: 1;
+    }
+
+    .footer {
+        margin-top: auto;
+        grid-row: -1;
+        order: 5;
+    }
+
+    .content {
+        background: yellow;
+        height: min-content;
+        padding: 20px 20px 20px 0;
+        grid-column: 2 / -1;
+        grid-row: 2 / 5;
+        order: 3;
+    }
+
+    .content > img {
+        float: left;
+        margin: 20px 20px 20px 0;
+    }
+
+    .content > div {
+        margin-bottom: 20px;
+    }
+
+    .side-1 {
+        background: green;
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+        order: 4;
+    }
+
+    .side-2 {
+        background: red;
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+        order: 2;
+    }
+
+    @media screen and (max-width: 768px) {
+        .main {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
+</html>
